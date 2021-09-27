@@ -1,0 +1,93 @@
+@import '_variables.scss';
+@import '_mixins.scss';
+
+.header {
+  max-width: 700px;
+  display: flex;
+  justify-content: space-between;
+  margin: 50px auto;
+  
+  &__coords,
+  &__calculate {
+    width: 195px;
+    
+    &-titles {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    
+    &-button {
+      width: 100%;
+      text-align: center;
+      border: 1px solid $border-color;
+      
+      @include button;
+    }
+  }
+  
+  &__coords {
+    &-title {
+      min-width: 60px;
+      margin-right: 10px;
+      text-align: center;
+    }
+  }
+  
+  &__calculate {
+    &-title {
+      min-width: 90px;
+      margin-right: 10px;
+      text-align: center;
+    }
+    
+    .header__inputs {
+      &-input {
+        width: 94px;
+      }
+    }
+  }
+  
+  &__inputs { 
+    max-width: 300px;
+    max-height: 150px;
+    
+    &-elements {
+      min-width: 100px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    &-input {
+      width: 60px;
+      border: 1px solid $border-color;
+      border-radius: 1px;
+      outline: none;
+      height: 20px;
+      
+      &:hover {
+        border-color: black;
+      }
+    }
+    
+    &-button {
+      min-width: 60px;
+      height: 20px;
+      text-align: center;
+      border: 1px solid $border-color;
+      
+      @include button;
+    }
+  }
+}
+
+._overfilled {
+  overflow-y: scroll;
+  width: 222px;
+  margin-bottom: 10px;
+  
+  .header__inputs-elements {
+    margin-right: 10px;
+  }
+}
+
