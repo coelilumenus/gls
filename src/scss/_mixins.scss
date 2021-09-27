@@ -1,0 +1,11 @@
+@mixin button($color: rgb(233, 233, 233)) {
+  cursor: pointer;
+  
+  &:hover {
+    border-color: black;
+  }
+  
+  &:active {
+    background-color: $color;
+  }
+}
