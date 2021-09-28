@@ -7,13 +7,20 @@ export class Header extends AbstractComponent {
   constructor($root, options) {
     super($root, {
       name: 'Header',
+      listeners: ['mousedown'],
       ...options
     });
-
-    this.coords = {};
   }
 
   getTemplate() {
     return createHeader(1, 1);
+  }
+
+  onMousedown(e) {
+    const data = e.target.dataset;
+
+    if (data.button === 'add') {
+      console.log(this.$root);
+    }
   }
 }

@@ -5,71 +5,39 @@ function createTitles(element) {
           </div>`;
 }
 
-function createInputElements(btn) {
-  return function() {
-    const button = btn
-      ? '<div class="header__inputs-button">Delete</div>'
-      : '';
-
-    return `<div class="header__inputs-elements">
-                <input type="text" class="header__inputs-input">
-                <input type="text" class="header__inputs-input">
-                ${button}
-            </div>`;
-  };
-}
-
-function createInputs(count, btn) {
-  const className = count > 4 ? '_overfilled' : '';
-  const inputs = new Array(count)
-    .fill('')
-    .map(createInputElements(btn))
-    .join(' ');
-
-  return `<div class="header__inputs ${className}">
-            ${inputs}
-          </div>`;
+function createInputsWrapper() {
+  return `<div 
+            class="header__inputs"
+            data-type="input"
+          ></div>`;
 }
 
 function createButton(title) {
-  return `<div class="header__coords-button">${title}</div>`;
+  return `<div 
+            class="header__coords-button"
+            data-button="${title.toLowerCase()}"
+          >${title}</div>`;
 }
 
-function createCoords(rowsCount) {
-  const titles = createTitles('coords');
-  const inputs = createInputs(rowsCount, true);
-  const button = createButton('Add');
+function createTable(name, className, title) {
+  const titles = createTitles(className);
+  const inputsWrapper = createInputsWrapper(name);
+  const button = createButton(title);
 
-  return `<div class="header__coords">
+  return `<div class="header__${className}" data-table="${name}">
             ${titles}
-            ${inputs}
+            ${inputsWrapper}
             ${button}
           </div>`;
 }
 
-function createCalculate(rowsCount) {
-  const titles = createTitles('calculate');
-  const inputs = createInputs(rowsCount, false);
-  const button = createButton('Calculate');
-
-  return `<div class="header__calculate">
-            ${titles}
-            ${inputs}
-            ${button}
-          </div>`;
-}
-
-export function createHeader(left, right) {
-  const calcRows = left > right ? right : left;
-
-  const coords = {
-    left: (rows) => createCoords(rows),
-    right: (rows) => createCoords(rows),
-    calculte: (rows) => createCalculate(rows)
-  };
+export function createHeader() {
+  const left = createTable('left', 'coords', 'Add');
+  const right = createTable('right', 'coords', 'Add');
+  const calculate = createTable('calc', 'calculate', 'Calculate');
 
   return `
-    ${coords.left(left)}
-    ${coords.right(right)}
-    ${coords.calculte(calcRows)}`;
+    ${left}
+    ${right}
+    ${calculate}`;
 }
