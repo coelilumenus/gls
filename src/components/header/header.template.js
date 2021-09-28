@@ -1,3 +1,5 @@
+import {createInput} from './header.functions';
+
 function createTitles(element) {
   return `<div class="header__${element}-titles">
             <div class="header__${element}-title">X</div>
@@ -5,11 +7,14 @@ function createTitles(element) {
           </div>`;
 }
 
-function createInputsWrapper() {
+function createInputsWrapper(table) {
+  const btn = table !== 'calc';
+  const input = createInput(0, table, btn);
+
   return `<div 
             class="header__inputs"
             data-type="input"
-          ></div>`;
+          >${input}</div>`;
 }
 
 function createButton(title) {

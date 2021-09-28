@@ -83,6 +83,11 @@ class Dom {
 
   addClass(className) {
     this.$element.classList.add(className);
+    return this;
+  }
+
+  containsClass(className) {
+    return this.$element.classList.contains(className);
   }
 
   removeClass(className) {
@@ -100,6 +105,28 @@ class Dom {
   focus() {
     this.$element.focus();
     return this;
+  }
+
+  checkOverflow(array, maxLength) {
+    const className = '_overfilled';
+
+    if (array.length > maxLength) {
+      $(this.$element).addClass(className);
+    } else if (this.containsClass(className)) {
+      $(this.$element).removeClass(className);
+    }
+    return $(this.$element);
+  }
+
+  id(parse) {
+    if (parse) {
+      const parsed = this.id().split(':');
+      return {
+        table: parsed[0],
+        index: parsed[1]
+      };
+    }
+    return this.data.id;
   }
 }
 
