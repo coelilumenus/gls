@@ -5,8 +5,8 @@ export class HeaderTables {
   constructor($root) {
     this.$root = $root;
     this.inputs = {
-      left: [{table: 'left', index: 0}],
-      right: [{table: 'right', index: 0}]
+      left: [{table: 'left', index: 0, value: {}}],
+      right: [{table: 'right', index: 0, value: {}}]
     };
   }
 
@@ -15,15 +15,30 @@ export class HeaderTables {
     const tableName = $table.data.table;
     const tableLength = this.inputs[tableName].length;
     const lastIndex = tableLength - 1 >= 0 ? tableLength : 0;
-    this.inputs[tableName].push({table: tableName, index: lastIndex});
+
+    this.inputs[tableName]
+      .push({table: tableName, index: lastIndex, value: {}});
 
     this.render();
   }
 
+  getInputValue(e) {
+    const $input = $(e.target).closest('[data-id]');
+    const {table, index} = $input.id(true);
+
+    const value = $(e.target).text();
+    const col = $(e.target).data.col;
+
+    this.inputs[table][index].value[col] = value;
+  }
+
   removeInput(e) {
     const $input = $(e.target).closest('[data-id]');
-    const {table} = $input.id(true);
-    this.inputs[table].pop();
+    const {table, index} = $input.id(true);
+    const newArr = this.inputs[table].filter((item) => item.index !== +index);
+
+    reIndex(newArr);
+    this.inputs[table] = newArr;
 
     this.render();
   }
@@ -49,4 +64,10 @@ export class HeaderTables {
     const calcArray = new Array(calcCount).fill('');
     initInputs(calcArray, 'calc', this.$root, false);
   }
+}
+
+function reIndex(arr) {
+  return arr.forEach((item, i) => {
+    item.index = i;
+  });
 }

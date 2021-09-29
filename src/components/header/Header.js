@@ -8,7 +8,7 @@ export class Header extends AbstractComponent {
   constructor($root, options) {
     super($root, {
       name: 'Header',
-      listeners: ['mousedown'],
+      listeners: ['mousedown', 'input'],
       ...options
     });
   }
@@ -29,5 +29,9 @@ export class Header extends AbstractComponent {
     } else if (data.button === 'delete') {
       this.tables.removeInput(e);
     }
+  }
+
+  onInput(e) {
+    this.tables.getInputValue(e);
   }
 }
