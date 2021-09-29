@@ -1,12 +1,15 @@
-import {initInputs} from './header.functions';
+import {initInputs} from './header.inputs';
+import {reIndex, getParsedId} from './header.functions';
 import {$} from '@core/dom';
 
 export class HeaderTables {
   constructor($root) {
     this.$root = $root;
+
     this.inputs = {
       left: [{table: 'left', index: 0, value: {}}],
-      right: [{table: 'right', index: 0, value: {}}]
+      right: [{table: 'right', index: 0, value: {}}],
+      calc: []
     };
   }
 
@@ -22,9 +25,17 @@ export class HeaderTables {
     this.render();
   }
 
-  getInputValue(e) {
-    const $input = $(e.target).closest('[data-id]');
-    const {table, index} = $input.id(true);
+  removeInput(e) {
+    const {table, index} = getParsedId(e.target);
+    const newArr = this.inputs[table].filter((item) => item.index !== +index);
+    reIndex(newArr);
+    this.inputs[table] = newArr;
+
+    this.render();
+  }
+
+  saveInputValue(e) {
+    const {table, index} = getParsedId(e.target);
 
     const value = $(e.target).text();
     const col = $(e.target).data.col;
@@ -32,42 +43,25 @@ export class HeaderTables {
     this.inputs[table][index].value[col] = value;
   }
 
-  removeInput(e) {
-    const $input = $(e.target).closest('[data-id]');
-    const {table, index} = $input.id(true);
-    const newArr = this.inputs[table].filter((item) => item.index !== +index);
-
-    reIndex(newArr);
-    this.inputs[table] = newArr;
-
-    this.render();
-  }
-
   clear() {
     this.$root.findAll('[data-type="input"]')
       .forEach((item) => $(item).clear());
   }
 
-  render() {
-    this.clear();
-
-    Object.keys(this.inputs)
-      .forEach((key) => {
-        initInputs(this.inputs[key], key, this.$root);
-      });
-
-    const calcCount = Math.min(
+  get minRows() {
+    return Math.min(
       this.inputs.left.length,
       this.inputs.right.length
     );
-
-    const calcArray = new Array(calcCount).fill('');
-    initInputs(calcArray, 'calc', this.$root, false);
   }
-}
 
-function reIndex(arr) {
-  return arr.forEach((item, i) => {
-    item.index = i;
-  });
+  render() {
+    this.clear();
+    this.inputs.calc = new Array(this.minRows).fill('');
+    Object.keys(this.inputs)
+      .forEach((key) => {
+        const btn = key !== 'calc';
+        initInputs(this.inputs[key], key, this.$root, btn);
+      });
+  }
 }
