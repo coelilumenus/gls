@@ -1,4 +1,5 @@
 import {AbstractComponent} from '@core/AbstractComponent';
+import {CanvasLogic} from './CanvasLogic';
 
 export class Canvas extends AbstractComponent {
   static className = 'canvas';
@@ -10,11 +11,17 @@ export class Canvas extends AbstractComponent {
     });
   }
 
+  prepare() {
+    this.canvas = new CanvasLogic();
+  }
+
   init() {
     super.init();
 
+    const $canvas = this.$root.find('#canvas');
+
     this.$on('data:change', (data) => {
-      console.log(data);
+      this.canvas.render($canvas, data);
     });
   }
 
