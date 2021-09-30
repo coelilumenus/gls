@@ -1,12 +1,15 @@
-import {initInputs} from './header.functions';
+import {initInputs} from './header.inputs';
+import {reIndex, getParsedId} from './header.functions';
 import {$} from '@core/dom';
 
 export class HeaderTables {
   constructor($root) {
     this.$root = $root;
+
     this.inputs = {
-      left: [{table: 'left', index: 0}],
-      right: [{table: 'right', index: 0}]
+      left: [{table: 'left', index: 0, value: {}}],
+      right: [{table: 'right', index: 0, value: {}}],
+      calc: []
     };
   }
 
@@ -15,17 +18,42 @@ export class HeaderTables {
     const tableName = $table.data.table;
     const tableLength = this.inputs[tableName].length;
     const lastIndex = tableLength - 1 >= 0 ? tableLength : 0;
-    this.inputs[tableName].push({table: tableName, index: lastIndex});
+
+    this.inputs[tableName]
+      .push({table: tableName, index: lastIndex, value: {}});
 
     this.render();
   }
 
   removeInput(e) {
-    const $input = $(e.target).closest('[data-id]');
-    const {table} = $input.id(true);
-    this.inputs[table].pop();
+    const {table, index} = getParsedId(e.target);
+    const newArr = this.inputs[table].filter((item) => item.index !== +index);
+    reIndex(newArr);
+    this.inputs[table] = newArr;
 
     this.render();
+  }
+
+  saveInputValue(e) {
+    const {table, index} = getParsedId(e.target);
+
+    const value = $(e.target).text();
+    const col = $(e.target).data.col;
+
+    this.inputs[table][index].value[col] = value;
+  }
+
+  calculateValue() {
+    const table = this.$root.find('[data-table="calc"]');
+
+    table.findAll('[data-id]')
+      .forEach((item, i) => {
+        const {value} = this.getValueCount(i);
+        const {X, Y} = value;
+
+        $(item).find('[data-col="X"]').value(X);
+        $(item).find('[data-col="Y"]').value(Y);
+      });
   }
 
   clear() {
@@ -33,20 +61,44 @@ export class HeaderTables {
       .forEach((item) => $(item).clear());
   }
 
-  render() {
-    this.clear();
+  getValueCount(i) {
+    const valueLeftX = this.inputs.left[i].value.X;
+    const valueRightX = this.inputs.right[i].value.X;
+    let X = (+valueLeftX + +valueRightX) / 2;
 
-    Object.keys(this.inputs)
-      .forEach((key) => {
-        initInputs(this.inputs[key], key, this.$root);
-      });
+    const valueLeftY = this.inputs.left[i].value.Y;
+    const valueRightY = this.inputs.right[i].value.Y;
+    let Y = (+valueLeftY + +valueRightY) / 2;
 
-    const calcCount = Math.min(
+    if (Number.isNaN(X)) {
+      X = 0;
+    }
+
+    if (Number.isNaN(Y)) {
+      Y = 0;
+    }
+
+    return {value: {X, Y}};
+  }
+
+  get minRows() {
+    return Math.min(
       this.inputs.left.length,
       this.inputs.right.length
     );
+  }
 
-    const calcArray = new Array(calcCount).fill('');
-    initInputs(calcArray, 'calc', this.$root, false);
+  render() {
+    this.clear();
+    this.inputs.calc = new Array(this.minRows).fill('');
+
+
+    Object.keys(this.inputs)
+      .forEach((key) => {
+        const isCalc = key !== 'calc';
+        initInputs(this.inputs[key], key, this.$root, isCalc);
+      });
+
+    this.calculateValue();
   }
 }

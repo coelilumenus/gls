@@ -25,6 +25,12 @@ class Dom {
     return this.$element.textContent.trim();
   }
 
+  value(text) {
+    if (this.$element.tagName.toLowerCase() === 'input') {
+      return this.$element.value = text;
+    }
+  }
+
   clear() {
     this.html('');
     return this;

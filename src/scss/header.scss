@@ -7,6 +7,11 @@
   justify-content: space-between;
   margin: $header-margin;
   
+  :read-only {
+    cursor: pointer;
+    text-align: center;
+  }
+  
   &__coords,
   &__calculate {
     width: 195px;

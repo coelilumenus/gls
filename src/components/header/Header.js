@@ -1,6 +1,7 @@
 import {AbstractComponent} from '@core/AbstractComponent';
-import {createHeader} from './header.template';
 import {HeaderTables} from './HeaderTables';
+import {createHeader} from './header.template';
+import {isAdd, isDelete, isCalculate} from './header.functions';
 
 export class Header extends AbstractComponent {
   static className = 'header';
@@ -8,7 +9,7 @@ export class Header extends AbstractComponent {
   constructor($root, options) {
     super($root, {
       name: 'Header',
-      listeners: ['mousedown'],
+      listeners: ['mousedown', 'input'],
       ...options
     });
   }
@@ -21,13 +22,25 @@ export class Header extends AbstractComponent {
     return createHeader();
   }
 
+  init() {
+    super.init();
+
+    this.tables.render();
+  }
+
   onMousedown(e) {
     const data = e.target.dataset;
 
-    if (data.button === 'add') {
+    if (isAdd(data)) {
       this.tables.addInput(e);
-    } else if (data.button === 'delete') {
+    } else if (isDelete(data)) {
       this.tables.removeInput(e);
+    } else if (isCalculate(data)) {
+      this.tables.calculateValue(e);
     }
+  }
+
+  onInput(e) {
+    this.tables.saveInputValue(e);
   }
 }
