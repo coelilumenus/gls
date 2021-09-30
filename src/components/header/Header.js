@@ -33,14 +33,18 @@ export class Header extends AbstractComponent {
 
     if (isAdd(data)) {
       this.tables.addInput(e);
+      this.$emit('data:change', this.tables.data);
     } else if (isDelete(data)) {
       this.tables.removeInput(e);
+      this.$emit('data:change', this.tables.data);
     } else if (isCalculate(data)) {
-      this.tables.calculateValue(e);
+      this.tables.calculateValue();
+      this.$emit('data:change', this.tables.data);
     }
   }
 
   onInput(e) {
     this.tables.saveInputValue(e);
+    this.$emit('data:change', this.tables.data);
   }
 }

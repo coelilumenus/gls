@@ -10,6 +10,14 @@ export class Canvas extends AbstractComponent {
     });
   }
 
+  init() {
+    super.init();
+
+    this.$on('data:change', (data) => {
+      console.log(data);
+    });
+  }
+
   getTemplate() {
     return `
       <canvas id="canvas"></canvas>

@@ -8,8 +8,7 @@ export class HeaderTables {
 
     this.inputs = {
       left: [{table: 'left', index: 0, value: {}}],
-      right: [{table: 'right', index: 0, value: {}}],
-      calc: []
+      right: [{table: 'right', index: 0, value: {}}]
     };
   }
 
@@ -86,6 +85,19 @@ export class HeaderTables {
       this.inputs.left.length,
       this.inputs.right.length
     );
+  }
+
+  get data() {
+    const newArr = [];
+
+    for (let i = 0; i < this.minRows; i++) {
+      newArr.push(this.getValueCount(i));
+    }
+
+    return {
+      tables: this.inputs,
+      calcValues: newArr
+    };
   }
 
   render() {
