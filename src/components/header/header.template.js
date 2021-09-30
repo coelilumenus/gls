@@ -5,7 +5,7 @@ function createTitles(element) {
           </div>`;
 }
 
-function createInputsWrapper(table) {
+function createInputsWrapper() {
   return `<div 
             class="header__inputs"
             data-type="input"

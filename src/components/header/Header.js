@@ -1,7 +1,7 @@
 import {AbstractComponent} from '@core/AbstractComponent';
 import {HeaderTables} from './HeaderTables';
 import {createHeader} from './header.template';
-import {isAdd, isDelete} from './header.functions';
+import {isAdd, isDelete, isCalculate} from './header.functions';
 
 export class Header extends AbstractComponent {
   static className = 'header';
@@ -35,6 +35,8 @@ export class Header extends AbstractComponent {
       this.tables.addInput(e);
     } else if (isDelete(data)) {
       this.tables.removeInput(e);
+    } else if (isCalculate(data)) {
+      this.tables.calculateValue(e);
     }
   }
 

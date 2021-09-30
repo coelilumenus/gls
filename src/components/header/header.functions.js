@@ -20,6 +20,10 @@ export function isDelete(data) {
   return (data.button === 'delete');
 }
 
+export function isCalculate(data) {
+  return (data.button === 'calculate');
+}
+
 export function isObjValue(element, value) {
   if (typeof element === 'object') {
     return Object.prototype.hasOwnProperty.call(element, value);
