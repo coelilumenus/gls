@@ -12,16 +12,17 @@ export class Canvas extends AbstractComponent {
   }
 
   prepare() {
-    this.canvas = new CanvasLogic();
+    const colors = ['#ff0000', '#00ff00', '#61dafb'];
+    this.canvas = new CanvasLogic(1200, 600, colors);
   }
 
   init() {
     super.init();
 
-    const $canvas = this.$root.find('#canvas');
+    const $canvas = document.querySelector('#canvas');
 
     this.$on('data:change', (data) => {
-      this.canvas.render($canvas, data);
+      this.canvas.init(data, $canvas);
     });
   }
 

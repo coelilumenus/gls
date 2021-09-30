@@ -12,17 +12,17 @@ function createInputsWrapper() {
           ></div>`;
 }
 
-function createButton(title) {
+function createButton(title, className) {
   return `<div 
-            class="header__coords-button"
+            class="header__coords-button ${className}"
             data-button="${title.toLowerCase()}"
           >${title}</div>`;
 }
 
-function createTable(name, className, title) {
+function createTable(name, className, title, buttonColor) {
   const titles = createTitles(className);
   const inputsWrapper = createInputsWrapper(name);
-  const button = createButton(title);
+  const button = createButton(title, buttonColor);
 
   return `<div class="header__${className}" data-table="${name}">
             ${titles}
@@ -32,9 +32,9 @@ function createTable(name, className, title) {
 }
 
 export function createHeader() {
-  const left = createTable('left', 'coords', 'Add');
-  const right = createTable('right', 'coords', 'Add');
-  const calculate = createTable('calc', 'calculate', 'Calculate');
+  const left = createTable('left', 'coords', 'Add', 'red');
+  const right = createTable('right', 'coords', 'Add', 'green');
+  const calculate = createTable('calc', 'calculate', 'Calculate', 'blue');
 
   return `
     ${left}
