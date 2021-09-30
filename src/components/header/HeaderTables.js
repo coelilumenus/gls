@@ -8,8 +8,7 @@ export class HeaderTables {
 
     this.inputs = {
       left: [{table: 'left', index: 0, value: {}}],
-      right: [{table: 'right', index: 0, value: {}}],
-      calc: []
+      right: [{table: 'right', index: 0, value: {}}]
     };
   }
 
@@ -86,6 +85,30 @@ export class HeaderTables {
       this.inputs.left.length,
       this.inputs.right.length
     );
+  }
+
+  get data() {
+    const left = {rows: [], table: 'left'};
+    const right = {rows: [], table: 'right'};
+    const result = {rows: [], table: 'result'};
+
+    this.inputs.left.forEach((item) => {
+      const {X, Y} = item.value;
+      left.rows.push([X, Y]);
+    });
+
+    this.inputs.right.forEach((item) => {
+      const {X, Y} = item.value;
+      right.rows.push([X, Y]);
+    });
+
+    for (let i = 0; i < this.minRows; i++) {
+      const {value} = this.getValueCount(i);
+      const {X, Y} = value;
+      result.rows.push([X, Y]);
+    }
+
+    return [left, right, result];
   }
 
   render() {

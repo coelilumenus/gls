@@ -31,6 +31,10 @@ class Dom {
     }
   }
 
+  getContext(value) {
+    return this.$element.getContext(value);
+  }
+
   clear() {
     this.html('');
     return this;
